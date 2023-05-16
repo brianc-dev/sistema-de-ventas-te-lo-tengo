@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('carteras', function (Blueprint $table) {
             $table->id();
+            $table->string('cliente_ulid');
+            $table->decimal('saldo', 19, 4);
             $table->timestamps();
         });
     }
