@@ -28,5 +28,6 @@ class UserModelTest extends TestCase
             'active' => true
         ]);
         $this->assertDatabaseCount('users', 1);
+        $this->assertDatabaseCount('perfils', 1);
     }
 }

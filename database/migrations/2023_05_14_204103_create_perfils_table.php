@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('perfils', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->string('username')->unique();
             $table->timestamps();
+            $table->index('user_id');
         });
     }
 
