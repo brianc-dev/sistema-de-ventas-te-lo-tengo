@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('carritos', function (Blueprint $table) {
-            $table->ulid();
+            $table->ulid('id');
+            $table->unsignedBigInteger('cliente_id');
             $table->timestamps();
         });
     }

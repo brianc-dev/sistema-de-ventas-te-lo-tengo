@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Administrador extends User
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }
