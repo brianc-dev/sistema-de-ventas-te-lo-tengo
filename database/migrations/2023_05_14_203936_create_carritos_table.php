@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('carritos', function (Blueprint $table) {
             $table->ulid('id');
-            $table->unsignedBigInteger('cliente_id');
+            $table->foreignUlid('cliente_id');
             $table->timestamps();
         });
     }

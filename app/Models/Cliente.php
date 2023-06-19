@@ -17,8 +17,11 @@ class Cliente extends Model
         parent::boot();
 
         static::created(function (Cliente $cliente) {
+            // create carrito for cliente
             $cliente->carrito()->create();
-        });
+            // create cartera for cliente
+            $cliente->cartera()->create();
+        }); 
     }
 
     public function user() {

@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('carteras', function (Blueprint $table) {
-            $table->id();
-            $table->string('cliente_ulid');
-            $table->decimal('saldo', 19, 4);
+            $table->ulid('id');
+            $table->foreignUlid('cliente_id');
+            $table->decimal('saldo', 19, 4)->default(0);
             $table->timestamps();
         });
     }
