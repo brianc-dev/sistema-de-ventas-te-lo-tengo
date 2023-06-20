@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\{ProductoController};
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +33,5 @@ Route::get('/contacto', function () {
 Route::get('/informacion', function () {
     return 'Sobre nosotros';
 });
+
+Route::resource('productos', ProductoController::class);
