@@ -14,9 +14,7 @@ use App\Http\Controllers\{ProductoController};
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('/', 'home');
 
 Route::get('/registrarse', function () {
     return 'Registrarse';
