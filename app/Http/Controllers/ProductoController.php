@@ -30,9 +30,7 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Productos/Create', [
-
-        ]);
+        return Inertia::render('Productos/Create');
     }
 
     /**
@@ -40,6 +38,25 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'codigo' => 'sometimes|string|between:1,10|unique:'.Producto::class,
+            'nombre' => 'required|string|alpha_num|between:1,50',
+            'cantidad' => 'required|numeric|integer|min:0|max:500',
+            'precio' => 'required|numeric|decimal:0,4|min:0',
+            'gravado' => 'required|boolean'
+        ]);
+
+        $producto = Producto::create([
+            'codigo' => $request->codigo,
+            'nombre' => $request->nombre,
+            'cantidad' => $request->cantidad,
+            'precio' => $request->precio,
+            'gravado' => $request->gravado
+        ]);
+
+        // Todo: redirect to a beautiful page...
+
+        return redirect(RouteServiceProvider::HOME);
     }
 
     /**
@@ -47,7 +64,6 @@ class ProductoController extends Controller
      */
     public function show(Producto $producto)
     {
-        //
     }
 
     /**
