@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('administradors', function (Blueprint $table) {
             $table->ulid('id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id');
             // $table->foreign('email')->references('email')->on('users')->unique();
             $table->timestamps();
         });

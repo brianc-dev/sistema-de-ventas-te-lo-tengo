@@ -9,11 +9,17 @@ use Inertia\Response;
 
 class ProductoController extends Controller
 {
+
+    public function __construct() {
+        $this->middleware('auth')->except('index', 'show');
+        $this->authorizeResource(Producto::class, 'producto');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index(): Response
     {
+        // TODO: add pagination
         return Inertia::render('Productos/Index', [
             'productos' => Producto::all()->sortBy('nombre')
         ]);
@@ -24,7 +30,9 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Productos/Create', [
+
+        ]);
     }
 
     /**
@@ -32,7 +40,6 @@ class ProductoController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**

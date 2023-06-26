@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->ulid('id');
-            $table->unsignedBigInteger('user_id');
+            $table->foreignId('user_id');
             $table->string('cedula')->unique();
             $table->string('nombre');
             $table->string('apellido');
