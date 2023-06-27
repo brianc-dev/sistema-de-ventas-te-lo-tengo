@@ -67,4 +67,24 @@ class ProductoModelTest extends TestCase
         $response->assertForbidden();
         
     }
+
+    public function test_that_producto_can_be_seen_by_anyone(): void {
+        $response = $this->get('/productos');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_that_producto_can_be_seen_by_cliente(): void {
+
+        $user = User::create([
+            'username' => 'username1',
+            'email' => 'username1@example.com',
+            'password' => 'username1=',
+            'active' => true
+        ]);
+
+        $response = $this->actingAs($user)->get('/productos');
+
+        $response->assertStatus(200);
+    }
 }

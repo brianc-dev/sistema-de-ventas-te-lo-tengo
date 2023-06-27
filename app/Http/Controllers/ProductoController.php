@@ -19,10 +19,16 @@ class ProductoController extends Controller
      */
     public function index(): Response
     {
+        $args = [
+            'productos' => Producto::all()->sortBy('nombre')->toArray()
+        ];
         // TODO: add pagination
-        return Inertia::render('Productos/Index', [
-            'productos' => Producto::all()->sortBy('nombre')
-        ]);
+        if (session()->has('status')) {
+            $status = session('status');
+            $args['status'] = $status;
+        }
+
+        return Inertia::render('Productos/Index', $args);
     }
 
     /**
@@ -56,7 +62,7 @@ class ProductoController extends Controller
 
         // Todo: redirect to a beautiful page...
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect('productos')->with('status', 'Producto creado exitosamente');
     }
 
     /**
@@ -64,6 +70,7 @@ class ProductoController extends Controller
      */
     public function show(Producto $producto)
     {
+        return Inertia::render('Productos/Show', ['producto' => $producto]);
     }
 
     /**

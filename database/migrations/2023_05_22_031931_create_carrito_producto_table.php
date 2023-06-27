@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('carrito_producto', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('carrito_id');
-            $table->unsignedBigInteger('producto_id');
+            $table->foreignUlid('producto_id');
             $table->timestamps();
         });
     }

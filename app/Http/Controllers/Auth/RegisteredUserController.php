@@ -16,6 +16,7 @@ use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
+    private const IsUserActiveDefault = true;
     /**
      * Display the registration view.
      */
@@ -41,7 +42,7 @@ class RegisteredUserController extends Controller
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'active' => true
+            'active' => self::IsUserActiveDefault
         ]);
 
         event(new Registered($user));
