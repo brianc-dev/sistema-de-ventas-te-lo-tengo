@@ -28,8 +28,7 @@ class ProductoPolicy
      */
     public function create(User $user): bool
     {
-        $admin = Administrador::Where('user_id', $user->id)->first();
-        return $admin != null && $user->active;
+        return Administrador::where('user_id', $user->id)->exists() && $user->active;
     }
 
     /**
@@ -37,8 +36,7 @@ class ProductoPolicy
      */
     public function update(User $user, Producto $producto): bool
     {
-        $admin = Administrador::Where('user_id', $user->id)->first();
-        return $admin != null && $user->active;
+        return Administrador::where('user_id', $user->id)->exists() && $user->active;
     }
 
     /**
@@ -46,8 +44,7 @@ class ProductoPolicy
      */
     public function delete(User $user, Producto $producto): bool
     {
-        $admin = Administrador::Where('user_id', $user->id)->first();
-        return $admin != null && $user->active;
+        return Administrador::where('user_id', $user->id)->exists() && $user->active;
     }
 
     /**
