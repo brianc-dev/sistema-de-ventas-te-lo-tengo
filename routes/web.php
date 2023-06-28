@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{ProfileController, ProductoController};
+use App\Http\Controllers\{ProfileController, ProductoController, CarritoController};
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,5 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/carrito', [CarritoController::class, 'index'])->middleware(['auth', 'verified'])->name('carrito.index');
 
 require __DIR__.'/auth.php';
