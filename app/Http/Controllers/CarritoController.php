@@ -30,6 +30,8 @@ class CarritoController extends Controller
 
         $carrito = $request->user()->cliente()->carrito();
         $carrito->productos->attach($request->productoId, ['cantidad' => $request->cantidad]);
+
+        return $carrito->productos->only(['producto_id', 'cantidad']);
     }
 
     public function remove(Request $request): Response {
@@ -41,9 +43,26 @@ class CarritoController extends Controller
 
         $carrito = $request->user()->cliente()->carrito();
         $carrito->productos->detach($request->productoId);
+
+        return $carrito->productos->only(['producto_id', 'cantidad']);
     }
 
-    public function updateQuantity(Request $request, $id, $quantity) {
+    public function update(Request $request) {
         $this->authorize('update', Carrito::class);
+
+        $request->validate([
+            'productoId' => 'required|ulid|exist:productos,id'
+        ]);
+
+        $availability = Producto::find($request->productoId)->cantidad;
+
+        $request->validate([
+            'cantidad' => 'required|numeric|integer|min:1|lte:'.$availability
+        ]);
+
+        $carrito = $request->user()->cliente()->carrito();
+        $carrito->productos->updateExistingPivot($request->productoId, ['cantidad' => $request->cantidad]);
+
+        return $carrito->productos->only(['producto_id', 'cantidad']);
     }
 }
