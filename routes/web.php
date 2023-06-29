@@ -37,6 +37,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/carrito', [CarritoController::class, 'index'])->middleware(['auth', 'verified'])->name('carrito.index');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/carrito', [CarritoController::class, 'index'])->name('carrito.index');
+    Route::post('/carrito', [CarritoController::class, 'add'])->name('carrito.add');
+    Route::delete('/carrito', [CarritoController::class, 'remove'])->name('carrito.remove');
+    Route::patch('/carrito', [CarritoController::class, 'update'])->name('carrito.update');
+});
 
 require __DIR__.'/auth.php';
