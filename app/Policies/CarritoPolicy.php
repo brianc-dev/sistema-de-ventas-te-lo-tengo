@@ -15,14 +15,14 @@ class CarritoPolicy
     }
 
     public function index(User $user) {
-        return User::find($user->id)->exist() && $user->active;
+        return User::find($user->id)->exists() && $user->active;
     }
 
     public function add(User $user) {
-        return User::find($user->id)->exist() && $user->active;
+        return User::find($user->id)->exists() && $user->active;
     }
 
     public function remove(User $user) {
-        return User::find($user->id)->exist() && $user->active;
+        return User::find($user->id)->exists() && $user->active;
     }
 }

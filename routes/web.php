@@ -44,4 +44,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/carrito', [CarritoController::class, 'update'])->name('carrito.update');
 });
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/cartera', [CarteraController::class, 'index'])->name('cartera.index');
+});
+
 require __DIR__.'/auth.php';
