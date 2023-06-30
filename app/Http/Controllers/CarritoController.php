@@ -12,7 +12,12 @@ class CarritoController extends Controller
     public function index(Request $request): Response {
         $this->authorize('index', Carrito::class);
 
-        return Inertia::render('Carrito/Index');
+        $carrito = $request->user()->cliente->carrito;
+        $productos = $carrito->productos->only(['producto_id', 'cantidad']);
+
+        return Inertia::render('Carrito/Index', [
+            'productos' => $productos
+        ]);
     }
 
     public function add(Request $request): Response {
@@ -28,7 +33,7 @@ class CarritoController extends Controller
             'cantidad' => 'required|numeric|integer|min:1|lte:'.$availability
         ]);
 
-        $carrito = $request->user()->cliente()->carrito();
+        $carrito = $request->user()->cliente->carrito;
         $carrito->productos->attach($request->productoId, ['cantidad' => $request->cantidad]);
 
         return $carrito->productos->only(['producto_id', 'cantidad']);
@@ -41,7 +46,7 @@ class CarritoController extends Controller
             'productoId' => 'required|ulid|exist:productos,id'
         ]);
 
-        $carrito = $request->user()->cliente()->carrito();
+        $carrito = $request->user()->cliente->carrito;
         $carrito->productos->detach($request->productoId);
 
         return $carrito->productos->only(['producto_id', 'cantidad']);
@@ -60,7 +65,7 @@ class CarritoController extends Controller
             'cantidad' => 'required|numeric|integer|min:1|lte:'.$availability
         ]);
 
-        $carrito = $request->user()->cliente()->carrito();
+        $carrito = $request->user()->cliente->carrito;
         $carrito->productos->updateExistingPivot($request->productoId, ['cantidad' => $request->cantidad]);
 
         return $carrito->productos->only(['producto_id', 'cantidad']);
