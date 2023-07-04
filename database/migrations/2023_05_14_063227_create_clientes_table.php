@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('clientes', function (Blueprint $table) {
             $table->ulid('id');
             $table->foreignId('user_id');
-            $table->string('cedula')->unique();
+            $table->enum('condicion', ['V', 'E']);
+            $table->integer('cedula')->unique();
             $table->string('nombre');
             $table->string('apellido');
-            $table->string('telefono');
+            $table->string('telefono')->nullable();
             $table->timestamps();
         });
     }

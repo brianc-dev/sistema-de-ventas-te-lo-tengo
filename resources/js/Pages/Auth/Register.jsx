@@ -12,6 +12,11 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        condicion: '',
+        cedula: '',
+        nombre: '',
+        apellido: '',
+        telefono: ''
     });
 
     useEffect(() => {
@@ -97,6 +102,84 @@ export default function Register() {
                     />
 
                     <InputError message={errors.password_confirmation} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                <InputLabel htmlFor="cedula" value="Cédula" />
+                    <div className="flex gap-6">
+                        <div className='w-1/6'>
+                            <select name="condicion" id="condicion" className='mt-1 inputfield' onChange={(e) => setData('condicion', e.target.value)}>
+                                <option value="">-</option>
+                                <option value="V">V</option>
+                                <option value="E">E</option>
+                            </select>
+                            <InputError message={errors.condicion} className="mt-2" />
+                        </div>
+                        <div className='w-5/6'>
+                            <TextInput
+                                id="cedula"
+                                type="number"
+                                name="cedula"
+                                value={data.cedula}
+                                className="mt-1 block w-full"
+                                autoComplete="cedula"
+                                onChange={(e) => setData('cedula', e.target.value)}
+                                required
+                            />
+                            <InputError message={errors.cedula} className="mt-2" />
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="nombre" value="Nombre" />
+
+                    <TextInput
+                        id="nombre"
+                        type="text"
+                        name="nombre"
+                        value={data.nombre}
+                        className="mt-1 block w-full"
+                        autoComplete="nombre"
+                        onChange={(e) => setData('nombre', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.nombre} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="apellido" value="Apellido" />
+
+                    <TextInput
+                        id="apellido"
+                        type="text"
+                        name="apellido"
+                        value={data.apellido}
+                        className="mt-1 block w-full"
+                        autoComplete="apellido"
+                        onChange={(e) => setData('apellido', e.target.value)}
+                        required
+                    />
+
+                    <InputError message={errors.apellido} className="mt-2" />
+                </div>
+
+                <div className="mt-4">
+
+                    <InputLabel htmlFor="telefono" value="Teléfono" />
+
+                    <TextInput
+                        id="telefono"
+                        type="text"
+                        name="telefono"
+                        value={data.telefono}
+                        className="mt-1 block w-full"
+                        autoComplete="telefono"
+                        onChange={(e) => setData('telefono', e.target.value)}
+                    />
+
+                    <InputError message={errors.telefono} className="mt-2" />
                 </div>
 
                 <div className="flex items-center justify-end mt-4">

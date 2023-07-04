@@ -17,6 +17,7 @@ use Inertia\Response;
 class RegisteredUserController extends Controller
 {
     private const IS_USER_ACTIVE_DEFAULT = true;
+    private const MAX_CEDULA_VALUE = 50000000;
     /**
      * Display the registration view.
      */
@@ -36,6 +37,11 @@ class RegisteredUserController extends Controller
             'username' => 'required|string|alpha_num:ascii|lowercase|max:30|unique:'.User::class,
             'email' => 'required|string|email|max:255|unique:'.User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'condicion' => 'required|string|size:1|in:V,E',
+            'cedula' => 'required|numeric|integer|between:1,'.self::MAX_CEDULA_VALUE.'|unique:'.Cliente::class,
+            'nombre' => 'required|string|alpha',
+            'apellido' => 'required|string|alpha',
+            'telefono' => 'sometimes|nullable|string|size:12|regex:/^02[0-9]{2}-[0-9]{7}$/',
         ]);
 
         $user = User::create([
@@ -43,6 +49,15 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'active' => self::IS_USER_ACTIVE_DEFAULT
+        ]);
+
+        $cliente = Cliente::create([
+            'condicion' => $request->input('condicion'),
+            'cedula' => $request->input('cedula'),
+            'nombre' => $request->input('nombre'),
+            'apellido' => $request->input('apellido'),
+            'telefono' => $request->input('telefono'),
+            'user_id' => $user->id
         ]);
 
         event(new Registered($user));
