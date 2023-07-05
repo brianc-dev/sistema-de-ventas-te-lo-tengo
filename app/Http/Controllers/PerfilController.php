@@ -39,7 +39,7 @@ class PerfilController extends Controller
                     $request->user()->email_verified_at = null;
                     $request->user()->save();
 
-                    $request->session()->flash('message', 'Correo electronico actualizado exitosamente');
+                    $request->session()->flash('message', ['message' => 'Correo electronico actualizado exitosamente', 'priority' => 'info']);
 
                     return Redirect::route('perfil.edit');
                 }

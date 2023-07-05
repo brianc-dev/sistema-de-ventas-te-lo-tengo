@@ -8,7 +8,8 @@ import { usePage } from '@inertiajs/react';
 export function GetFlashMessages() {
     const { flash } = usePage().props;
     useEffect(() => {
-        flash.message && enqueueSnackbar(flash.message, { variant: 'success'})
+        flash.message && enqueueSnackbar(flash.message.message, { variant: flash.message.priority});
+        flash.message = null;
     }, [flash])
     
     return;
