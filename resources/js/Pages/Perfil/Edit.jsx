@@ -3,7 +3,9 @@ import NavBar from "@/Components/NavBar";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm, usePage } from "@inertiajs/react";
 // import { Snackbar } from "@mui/material";
-import { FlashMessage } from "@/helpers";
+import { GetFlashMessages } from "@/helpers";
+import { SnackbarProvider, enqueueSnackbar } from 'notistack';
+import { useEffect } from "react";
 
 export default function Edit({ user, cliente }) {
 
@@ -16,7 +18,9 @@ export default function Edit({ user, cliente }) {
 
     const submitUserForm = (e) => {
         e.preventDefault();
-        userForm.patch('/perfil');
+        userForm.patch('/perfil', {
+            preserveScroll: true,
+        });
     }
 
     const perfilForm = useForm({
@@ -31,9 +35,22 @@ export default function Edit({ user, cliente }) {
         userForm.patch('/perfil');
     }
 
+    // useEffect(() => {
+
+    //     enqueueSnackbar("Snackbar 1", {
+    //         autoHideDuration: 6000, variant: "success"
+    //     });
+
+    //     enqueueSnackbar("Snackbar 2", {
+    //         autoHideDuration: 6000, variant: "success"
+    //     });
+    // }, [])
+
     return (
         <>
             <NavBar />
+            <SnackbarProvider autoHideDuration={6000}/>
+            <GetFlashMessages />
             <section>
                 <header className="bg-orange-200 py-6 px-6">
                     <h2 className="text-xl font-medium text-gray-900">Informacion de usuario</h2>
@@ -80,8 +97,6 @@ export default function Edit({ user, cliente }) {
                     </div>
                 </div>
             </section>
-            <FlashMessage />
-            {/* <Snackbar open={true} autoHideDuration={6000} message={"asdfg"} onClose={() => {}}/> */}
         </>
     )
 }

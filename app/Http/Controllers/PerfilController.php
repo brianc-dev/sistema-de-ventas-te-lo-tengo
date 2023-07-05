@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Validation\Rule;
 use Inertia\Response;
+use App\Models\{User};
+use Illuminate\Support\Facades\Redirect;
 
 class PerfilController extends Controller
 {
@@ -27,7 +30,7 @@ class PerfilController extends Controller
         switch ($request->input('form')) {
             case 'user':
                 $validatedData = $request->validate([
-                    'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)]
+                    'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($request->user()->id)]
                 ]);
 
                 $request->user()->fill($validatedData);
@@ -36,9 +39,9 @@ class PerfilController extends Controller
                     $request->user()->email_verified_at = null;
                     $request->user()->save();
 
-                    Inertia::share('flash', [
-                        'message' => "Email actualizado exitosamente"
-                    ]);
+                    $request->session()->flash('message', 'Correo electronico actualizado exitosamente');
+
+                    return Redirect::route('perfil.edit');
                 }
 
                 break;

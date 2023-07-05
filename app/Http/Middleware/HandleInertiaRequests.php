@@ -40,6 +40,9 @@ class HandleInertiaRequests extends Middleware
                 ]);
             },
             'appName' => config('app.name'),
+            'flash' => [
+                'message' => fn () => $request->session()->get('message')
+            ]
         ]);
     }
 }
