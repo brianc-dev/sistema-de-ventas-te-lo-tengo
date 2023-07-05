@@ -5,6 +5,10 @@
 /* Custom style */
 @layer base {
     .inputfield {
-        @apply border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm
+        @apply border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm disabled:opacity-75 disabled:bg-slate-200
+    }
+
+    .card {
+        @apply bg-white rounded-md shadow-sm drop-shadow-md p-6
     }
 }

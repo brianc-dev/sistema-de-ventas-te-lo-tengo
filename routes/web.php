@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{ProfileController, ProductoController, CarritoController};
+use App\Http\Controllers\{ProfileController, ProductoController, CarritoController, PerfilController};
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -47,5 +47,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/cartera', [CarteraController::class, 'index'])->name('cartera.index');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/perfil', [PerfilController::class, 'edit'])->name('perfil.edit');
+    Route::patch('/perfil', [perfilController::class, 'update'])->name('perfil.update');
+});
+
+// Admin routes
+Route::prefix('admin')->group(function() {
+    
+})->middleware('auth');
 
 require __DIR__.'/auth.php';

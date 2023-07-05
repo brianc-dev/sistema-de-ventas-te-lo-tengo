@@ -24,7 +24,7 @@ class CarritoController extends Controller
         $this->authorize('add', Carrito::class);
 
         $request->validate([
-            'productoId' => 'required|ulid|exist:productos,id'
+            'productoId' => 'required|ulid|exists:productos,id'
         ]);
 
         $availability = Producto::find($request->productoId)->cantidad;
