@@ -2,10 +2,8 @@ import InputError from "@/Components/InputError";
 import NavBar from "@/Components/NavBar";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { useForm, usePage } from "@inertiajs/react";
-// import { Snackbar } from "@mui/material";
 import { GetFlashMessages } from "@/helpers";
-import { SnackbarProvider, enqueueSnackbar } from 'notistack';
-import { useEffect } from "react";
+import { SnackbarProvider } from 'notistack';
 
 export default function Edit({ user, cliente }) {
 
@@ -32,19 +30,10 @@ export default function Edit({ user, cliente }) {
 
     const submitPerfilForm = (e) => {
         e.preventDefault();
-        userForm.patch('/perfil');
+        perfilForm.patch('/perfil', {
+            preserveScroll: true
+        });
     }
-
-    // useEffect(() => {
-
-    //     enqueueSnackbar("Snackbar 1", {
-    //         autoHideDuration: 6000, variant: "success"
-    //     });
-
-    //     enqueueSnackbar("Snackbar 2", {
-    //         autoHideDuration: 6000, variant: "success"
-    //     });
-    // }, [])
 
     return (
         <>
@@ -89,7 +78,7 @@ export default function Edit({ user, cliente }) {
                             <InputError className="mt-2" message={perfilForm.errors.apellido} />
                             <label className="block mt-2" htmlFor="telefono">Telefono</label><sub>Ejemplo: 0281-1234567 / 0414-1234567</sub>
                             <div>
-                                <input className="inputfield inline mt-1" type="text" name="telefono" id="telefono" value={perfilForm.data.telefono || ""} onChange={e => perfilForm.setData('telefono', e.target.value)} placeholder={!perfilForm.data.telefono && "No registrado"} maxLength={12} pattern="^02[0-9]{2}-[0-9]{7}$"/>
+                                <input className="inputfield inline mt-1" type="text" name="telefono" id="telefono" value={perfilForm.data.telefono || ""} onChange={e => perfilForm.setData('telefono', e.target.value)} placeholder="Ej: 0281-1234567" maxLength={12} pattern="^02[0-9]{2}-[0-9]{7}$"/>
                                 <InputError className="mt-2" message={perfilForm.errors.telefono} />
                             </div>
                             <PrimaryButton className="block mt-4" disabled={perfilForm.processing}>Modificar</PrimaryButton>
