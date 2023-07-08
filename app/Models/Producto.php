@@ -19,11 +19,19 @@ class Producto extends Model
         'gravado'
     ];
 
+    protected $hidden = [
+        'codigo'
+    ];
+
     public function pedidos() {
         return $this->belongsToMany(Pedido::class);
     }
 
     public function carritos() {
         return $this->belongsToMany(Carrito::class);
+    }
+
+    public function imagenes() {
+        return $this->hasMany(Imagen::class);
     }
 }

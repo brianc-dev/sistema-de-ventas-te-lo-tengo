@@ -52,7 +52,7 @@ class ProductoPolicy
      */
     public function restore(User $user, Producto $producto): bool
     {
-        //
+        return Administrador::where('user_id', $user->id)->exists() && $user->active;
     }
 
     /**
@@ -60,6 +60,6 @@ class ProductoPolicy
      */
     public function forceDelete(User $user, Producto $producto): bool
     {
-        //
+        return Administrador::where('user_id', $user->id)->exists() && $user->active;
     }
 }

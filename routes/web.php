@@ -29,7 +29,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::resource('/productos', ProductoController::class);
+Route::resource('/productos', ProductoController::class)->only(['index', 'show']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -55,7 +55,7 @@ Route::middleware(['auth'])->group(function () {
 
 // Admin routes
 Route::prefix('admin')->group(function() {
-    
+    Route::resource('/productos', ProductoController::class)->except(['index', 'show']);
 })->middleware('auth');
 
 require __DIR__.'/auth.php';
