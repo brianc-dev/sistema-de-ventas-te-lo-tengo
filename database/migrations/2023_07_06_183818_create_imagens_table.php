@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('imagens', function (Blueprint $table) {
             $table->ulid('id');
             $table->foreignUlid('producto_id');
-            $table->string('name');
+            $table->string('url');
             $table->timestamps();
         });
     }

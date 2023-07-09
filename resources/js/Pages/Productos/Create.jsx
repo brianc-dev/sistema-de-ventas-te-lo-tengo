@@ -2,30 +2,39 @@ import {useForm} from '@inertiajs/react';
 import PrimaryButton from "@/Components/PrimaryButton";
 import NavBar from "@/Components/NavBar";
 import {useEffect, useState} from "react";
+import {SnackbarProvider} from "notistack";
+import {GetFlashMessages} from "@/helpers";
 
 export default function Create({auth}) {
-    const {data, setData, post, processing, errors} = useForm({
+    const {data, setData, post, processing, errors, progress} = useForm({
         codigo: '',
         nombre: '',
         cantidad: 0,
         precio: 0.0,
-        gravado: false
+        gravado: false,
+        pictures: null
     });
 
-    const [images, setImages] = useState(null)
+    const [images, setImages] = useState([])
 
     const onSubmit = (e) => {
         e.preventDefault();
-        post('/productos');
+        post('/admin/productos');
     }
 
     const onPicturesSelected = (e) => {
-        setImages(e.target.files)
+        const newFiles = Object.values(e.target.files)
+        const files = [...images]
+        files.push(...newFiles)
+        setImages(files)
+        setData('pictures', e.target.files)
     }
 
     return (
         <>
             <NavBar/>
+            <SnackbarProvider autoHideDuration={6000}/>
+            <GetFlashMessages />
             <form onSubmit={onSubmit}>
                 <label htmlFor="codigo">Codigo</label>
                 <input className="block inputfield" id="codigo" placeholder='Codigo' type="text" value={data.codigo}
@@ -45,11 +54,17 @@ export default function Create({auth}) {
                 {errors.precio && <div>{errors.precio}</div>}
                 <input type="checkbox" checked={data.gravado}
                        onChange={e => setData('gravado', e.target.checked)}/> Gravado
-                <input className="block" type="file" name="pictures" id="pictures" multiple
+                <input className="block" type="file" id="pictures" multiple
                        accept={"image/jpeg,image/png"} onChange={onPicturesSelected}/>
+                {errors.pictures && <div>{errors.pictures}</div>}
+                {progress && (
+                    <progress value={progress.percentage} max="100">
+                        {progress.percentage}%
+                    </progress>
+                )}
                 <PrimaryButton disabled={processing}>Crear</PrimaryButton>
                 <PreviewPanel key={crypto.randomUUID()} images={images}/>
-            </form>
+            </form>1
         </>
     );
 }
@@ -59,13 +74,14 @@ function PreviewPanel({images}) {
     const [imageNumber, setImageNumber] = useState(0)
 
     const [imageFrames, setImageFrame] = useState([])
+
     useEffect(() => {
 
-        if (images != null) {
+        if (images.length !== 0) {
             const reader = new FileReader()
             reader.onload = (e) => {
 
-                const img = <img key={imageNumber} src={e.target.result}/>
+                const img = <img className="w-1/6 image-preview" key={imageNumber} src={e.target.result} alt={`Image number ${imageNumber + 1} for product`}/>
 
                 if (imageNumber < images.length - 1) {
                     const newNumber = imageNumber + 1
@@ -81,7 +97,7 @@ function PreviewPanel({images}) {
     }, [imageNumber, images])
 
     return (
-        <div>
+        <div className="flex">
             {imageFrames.map(image => image)}
         </div>
     )

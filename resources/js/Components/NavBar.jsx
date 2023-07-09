@@ -9,6 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 
 import { BellIcon, MailIcon, ShoppingCartIcon, MenuIcon } from "./Icons";
+import {SnackbarProvider} from "notistack";
+import {GetFlashMessages} from "@/helpers";
 
 function NavBar2() {
 
@@ -226,6 +228,8 @@ export default function NavBar() {
             </AppBar>
             {renderMobileMenu}
             {renderMenu}
+            <SnackbarProvider autoHideDuration={6000}/>
+            <GetFlashMessages />
         </Box>
     );
 }

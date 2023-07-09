@@ -11,4 +11,8 @@
     .card {
         @apply bg-white rounded-md shadow-sm drop-shadow-md p-6
     }
+
+    .image-preview {
+        @apply border-2 border-slate-600 aspect-square object-contain bg-white
+    }
 }

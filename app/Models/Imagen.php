@@ -13,7 +13,7 @@ class Imagen extends Model
     use HasUlids;
 
     protected $fillable = [
-        'producto_id', 'name'
+        'producto_id', 'name', 'url'
     ];
 
     public function producto(): BelongsTo {
