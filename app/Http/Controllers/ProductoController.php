@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Imagen;
 use App\Models\Producto;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -27,16 +28,13 @@ class ProductoController extends Controller
      */
     public function index(): Response
     {
-        $args = [
-            'productos' => Producto::all()->sortBy('nombre')->toArray()
-        ];
-        // TODO: add pagination
-        if (session()->has('status')) {
-            $status = session('status');
-            $args['status'] = $status;
-        }
+        $productos = Producto::with(['imagenes'])->get()->sortBy('nombre')->toArray();
 
-        return Inertia::render('Productos/Index', $args);
+        // TODO: add pagination
+
+        return Inertia::render('Productos/Index', [
+            'productos' => $productos
+        ]);
     }
 
     /**

@@ -17,7 +17,7 @@
     }
 
     .image-preview--cover {
-        @apply w-full h-full absolute z-50 hover:bg-white/30 hover:backdrop-blur-sm
+        @apply w-full h-full absolute z-50 hover:bg-black/30 hover:backdrop-blur-sm
     }
 
     .primary-button {

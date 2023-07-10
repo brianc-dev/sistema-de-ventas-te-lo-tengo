@@ -1,6 +1,7 @@
 import MainLayout from "@/Layouts/MainLayout";
 import {useState} from "react";
 import {useForm} from "@inertiajs/react";
+import InputError from "@/Components/InputError";
 
 export default function Show({auth, producto}) {
 
@@ -8,7 +9,12 @@ export default function Show({auth, producto}) {
         producto: producto,
         cantidad: 1
     })
-    // todo: move to its own component
+    const onSecondaryClickListener = () => {
+        post("carrito")
+    }
+    const onPrimaryClickListener = () => {
+        // post("")
+    }
     return (
         <MainLayout title={producto.nombre}>
             <main className={"container px-12 py-6 grid grid-cols-3 gap-4"}>
@@ -21,9 +27,10 @@ export default function Show({auth, producto}) {
                     <p>Disponibilidad: {producto.cantidad}</p>
                     <p>Precio: <span>$ </span>{producto.precio}</p>
                     <p>Cantidad: </p><input className={"w-fit min-w-min max-w-fit"} type="number" value={data.cantidad} onChange={(e) => setData('cantidad', e.target.value)} required min={1} max={producto.cantidad}/>
+                    {errors.cantidad && <InputError message={errors.cantidad}/>}
                     <div className="grid grid-cols-2 gap-2">
-                        <button className={"secondary-button"}>Agregar al carrito</button>
-                        <button className={"primary-button"}>Comprar</button>
+                        <button className={"secondary-button"} onClick={onSecondaryClickListener} disabled={processing}>Agregar al carrito</button>
+                        <button className={"primary-button"} onClick={onPrimaryClickListener} disabled={processing}>Comprar</button>
                     </div>
                 </div>
             </main>
