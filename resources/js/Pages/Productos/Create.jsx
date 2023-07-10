@@ -4,6 +4,7 @@ import NavBar from "@/Components/NavBar";
 import {useEffect, useState} from "react";
 import {SnackbarProvider} from "notistack";
 import {GetFlashMessages} from "@/helpers";
+import {TrashIcon} from "@/Components/Icons";
 
 export default function Create({auth}) {
     const {data, setData, post, processing, errors, progress} = useForm({
@@ -30,11 +31,16 @@ export default function Create({auth}) {
         setData('pictures', e.target.files)
     }
 
+    const onPictureClicked = (imageNumber) => {
+        const files = [...images]
+        files.splice(imageNumber, 1)
+        setImages(files)
+        setData('pictures', files)
+    }
+
     return (
         <>
             <NavBar/>
-            <SnackbarProvider autoHideDuration={6000}/>
-            <GetFlashMessages />
             <form onSubmit={onSubmit}>
                 <label htmlFor="codigo">Codigo</label>
                 <input className="block inputfield" id="codigo" placeholder='Codigo' type="text" value={data.codigo}
@@ -63,13 +69,13 @@ export default function Create({auth}) {
                     </progress>
                 )}
                 <PrimaryButton disabled={processing}>Crear</PrimaryButton>
-                <PreviewPanel key={crypto.randomUUID()} images={images}/>
-            </form>1
+                <PreviewPanel key={crypto.randomUUID()} images={images} onClickListener={onPictureClicked}/>
+            </form>
         </>
     );
 }
 
-function PreviewPanel({images}) {
+function PreviewPanel({images, onClickListener}) {
 
     const [imageNumber, setImageNumber] = useState(0)
 
@@ -81,7 +87,15 @@ function PreviewPanel({images}) {
             const reader = new FileReader()
             reader.onload = (e) => {
 
-                const img = <img className="w-1/6 image-preview" key={imageNumber} src={e.target.result} alt={`Image number ${imageNumber + 1} for product`}/>
+                const img = (
+                    <div className="relative" key={imageNumber} onClick={(e) => onClickListener(imageNumber)}>
+                        <div className="image-preview--cover flex justify-center items-center"><TrashIcon /></div>
+                        <img className="image-preview--img"
+                             src={e.target.result}
+                             alt={`Image number ${imageNumber + 1} for product`}
+                             />
+                    </div>
+                )
 
                 if (imageNumber < images.length - 1) {
                     const newNumber = imageNumber + 1
@@ -97,7 +111,7 @@ function PreviewPanel({images}) {
     }, [imageNumber, images])
 
     return (
-        <div className="flex">
+        <div className="grid grid-cols-4 gap-2">
             {imageFrames.map(image => image)}
         </div>
     )

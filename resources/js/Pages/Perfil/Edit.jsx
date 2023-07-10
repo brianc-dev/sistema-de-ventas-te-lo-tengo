@@ -38,8 +38,6 @@ export default function Edit({ user, cliente }) {
     return (
         <>
             <NavBar />
-            <SnackbarProvider autoHideDuration={6000}/>
-            <GetFlashMessages />
             <section>
                 <header className="bg-orange-200 py-6 px-6">
                     <h2 className="text-xl font-medium text-gray-900">Informacion de usuario</h2>

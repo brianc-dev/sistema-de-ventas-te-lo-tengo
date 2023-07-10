@@ -12,7 +12,11 @@
         @apply bg-white rounded-md shadow-sm drop-shadow-md p-6
     }
 
-    .image-preview {
-        @apply border-2 border-slate-600 aspect-square object-contain bg-white
+    .image-preview--img {
+        @apply border-2 border-slate-600 aspect-square object-contain bg-white min-w-full
+    }
+
+    .image-preview--cover {
+        @apply w-full h-full absolute z-50 hover:bg-white/30 hover:backdrop-blur-sm
     }
 }
