@@ -19,4 +19,12 @@
     .image-preview--cover {
         @apply w-full h-full absolute z-50 hover:bg-white/30 hover:backdrop-blur-sm
     }
+
+    .primary-button {
+        @apply bg-amber-500 p-2 text-sm rounded-lg h-full min-h-min max-h-min
+    }
+
+    .secondary-button {
+        @apply border-solid border-2 border-amber-400 p-2 text-sm rounded-lg h-full min-h-min max-h-min
+    }
 }

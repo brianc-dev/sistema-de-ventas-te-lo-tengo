@@ -1,27 +1,27 @@
 import Producto from "@/Components/Producto";
-import Modal from "@/Components/Modal";
-import { Container, Grid } from "@mui/material";
-import { Head } from "@inertiajs/react";
-import Footer from "@/Components/Footer";
-import NavBar from "@/Components/NavBar";
-import IndexLayout from "@/Layouts/Productos/IndexLayout";
+import {Grid} from "@mui/material";
+import MainLayout from "@/Layouts/MainLayout";
 
-
-export default function Index({ auth, productos, status }) {
-    const modal = <p>{status}</p>
-    const navbar = <NavBar />
-    const content = 
-    <div>
-        <Grid container spacing={2}>
-            {Object.values(productos).map(producto => <Producto key={producto.id} producto={producto} />)}
-        </Grid>
-    </div>
-    const footer = <Footer />
+export default function Index({auth, productos}) {
+    const content =
+        <div>
+            <Grid container spacing={2}>
+                {Object.values(productos).map(producto => <Producto key={producto.id} producto={producto}/>)}
+            </Grid>
+        </div>
+    const sidebar = <div className="bg-sky-500">sidebar</div>
     return (
-        <IndexLayout auth={auth} navbar={navbar} content={content} footer={footer}>
-            <Head title="Productos">
-                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-            </Head>
-        </IndexLayout>
+        <MainLayout title={"Productos"}>
+            <div className="">
+                <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-8 gap-1">
+                    <div className="col-span-12 md:col-span-1 lg:col-span-2">
+                        {sidebar}
+                    </div>
+                    <div className="col-span-12 md:col-span-3 lg:col-span-6">
+                        {content}
+                    </div>
+                </div>
+            </div>
+        </MainLayout>
     )
 }

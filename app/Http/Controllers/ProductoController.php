@@ -105,6 +105,7 @@ class ProductoController extends Controller
      */
     public function show(Producto $producto)
     {
+        $producto->load(['imagenes']);
         return Inertia::render('Productos/Show', ['producto' => $producto]);
     }
 

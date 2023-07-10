@@ -3,7 +3,7 @@ import { Container, Stack, Typography } from '@mui/material';
 
 export default function Footer({ auth }) {
     return (
-        <footer>
+        <footer className={"pt-6 bg-gradient-to-b from-amber-400 to-orange-400"}>
             <Container>
                 <Stack direction={'column'} spacing={2}>
                     <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>

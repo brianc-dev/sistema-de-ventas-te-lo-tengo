@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import {SnackbarProvider} from "notistack";
 import {GetFlashMessages} from "@/helpers";
 import {TrashIcon} from "@/Components/Icons";
+import MainLayout from "@/Layouts/MainLayout";
 
 export default function Create({auth}) {
     const {data, setData, post, processing, errors, progress} = useForm({
@@ -39,39 +40,38 @@ export default function Create({auth}) {
     }
 
     return (
-        <>
-            <NavBar/>
-            <form onSubmit={onSubmit}>
-                <label htmlFor="codigo">Codigo</label>
-                <input className="block inputfield" id="codigo" placeholder='Codigo' type="text" value={data.codigo}
-                       onChange={e => setData('codigo', e.target.value)}/>
-                {errors.codigo && <div>{errors.codigo}</div>}
-                <label htmlFor="nombre">Nombre</label>
-                <input className="block inputfield" id="nombre" placeholder='Nombre' type="text" value={data.nombre}
-                       onChange={e => setData('nombre', e.target.value)}/>
-                {errors.nombre && <div>{errors.nombre}</div>}
-                <label htmlFor="cantidad">Cantidad disponible</label>
-                <input className="block inputfield" id="cantidad" placeholder='Cantidad' type="number"
-                       value={data.cantidad} onChange={e => setData('cantidad', e.target.value)}/>
-                {errors.cantidad && <div>{errors.cantidad}</div>}
-                <label htmlFor="precio">Precio Unitario</label>
-                <input className="block inputfield" id="precio" placeholder='Precio' type="number" value={data.precio}
-                       onChange={e => setData('precio', e.target.value)}/>
-                {errors.precio && <div>{errors.precio}</div>}
-                <input type="checkbox" checked={data.gravado}
-                       onChange={e => setData('gravado', e.target.checked)}/> Gravado
-                <input className="block" type="file" id="pictures" multiple
-                       accept={"image/jpeg,image/png"} onChange={onPicturesSelected}/>
-                {errors.pictures && <div>{errors.pictures}</div>}
-                {progress && (
-                    <progress value={progress.percentage} max="100">
-                        {progress.percentage}%
-                    </progress>
-                )}
-                <PrimaryButton disabled={processing}>Crear</PrimaryButton>
-                <PreviewPanel key={crypto.randomUUID()} images={images} onClickListener={onPictureClicked}/>
-            </form>
-        </>
+            <MainLayout>
+                <form onSubmit={onSubmit}>
+                    <label htmlFor="codigo">Codigo</label>
+                    <input className="block inputfield" id="codigo" placeholder='Codigo' type="text" value={data.codigo}
+                           onChange={e => setData('codigo', e.target.value)}/>
+                    {errors.codigo && <div>{errors.codigo}</div>}
+                    <label htmlFor="nombre">Nombre</label>
+                    <input className="block inputfield" id="nombre" placeholder='Nombre' type="text" value={data.nombre}
+                           onChange={e => setData('nombre', e.target.value)}/>
+                    {errors.nombre && <div>{errors.nombre}</div>}
+                    <label htmlFor="cantidad">Cantidad disponible</label>
+                    <input className="block inputfield" id="cantidad" placeholder='Cantidad' type="number"
+                           value={data.cantidad} onChange={e => setData('cantidad', e.target.value)}/>
+                    {errors.cantidad && <div>{errors.cantidad}</div>}
+                    <label htmlFor="precio">Precio Unitario</label>
+                    <input className="block inputfield" id="precio" placeholder='Precio' type="number" value={data.precio}
+                           onChange={e => setData('precio', e.target.value)}/>
+                    {errors.precio && <div>{errors.precio}</div>}
+                    <input type="checkbox" checked={data.gravado}
+                           onChange={e => setData('gravado', e.target.checked)}/> Gravado
+                    <input className="block" type="file" id="pictures" multiple
+                           accept={"image/jpeg,image/png"} onChange={onPicturesSelected}/>
+                    {errors.pictures && <div>{errors.pictures}</div>}
+                    {progress && (
+                        <progress value={progress.percentage} max="100">
+                            {progress.percentage}%
+                        </progress>
+                    )}
+                    <PrimaryButton disabled={processing}>Crear</PrimaryButton>
+                    <PreviewPanel key={crypto.randomUUID()} images={images} onClickListener={onPictureClicked}/>
+                </form>
+            </MainLayout>
     );
 }
 
