@@ -21,7 +21,7 @@
     }
 
     .primary-button {
-        @apply bg-amber-500 p-2 text-sm rounded-lg h-full min-h-min max-h-min
+        @apply bg-amber-500 p-2 text-sm rounded-lg h-full min-h-min max-h-min font-bold text-white text-lg
     }
 
     .secondary-button {

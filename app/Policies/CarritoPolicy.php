@@ -11,7 +11,7 @@ class CarritoPolicy
      */
     public function __construct()
     {
-        
+
     }
 
     public function index(User $user) {
@@ -19,6 +19,10 @@ class CarritoPolicy
     }
 
     public function add(User $user) {
+        return User::find($user->id)->exists() && $user->active;
+    }
+
+    public function update(User $user) {
         return User::find($user->id)->exists() && $user->active;
     }
 

@@ -1,16 +1,18 @@
 import MainLayout from "@/Layouts/MainLayout";
-import {useState} from "react";
 import {useForm} from "@inertiajs/react";
 import InputError from "@/Components/InputError";
+import {Gallery} from "@/Components/Gallery";
 
 export default function Show({auth, producto}) {
 
     const {data, setData, errors, processing, post, } = useForm({
-        producto: producto,
+        productoId: producto.id,
         cantidad: 1
     })
     const onSecondaryClickListener = () => {
-        post("carrito")
+        post("/carrito", {
+            preserveScroll: true,
+        })
     }
     const onPrimaryClickListener = () => {
         // post("")
@@ -47,19 +49,3 @@ export default function Show({auth, producto}) {
     );
 }
 
-export function Gallery({images = []}) {
-    const [currentImage, setCurrentImage] = useState(images[0] ?? {})
-
-    const onMouseOverListener = (image) => {
-        setCurrentImage(image)
-    }
-
-    return (
-        <div className="grid grid-cols-4 gap-4 max-h-full">
-            <div className="col-span-1 px-4 flex flex-col items-center overflow-y-auto gap-2 h-fit snap-y">
-                {images?.map(image => <img className={"flex-none border-2 border-slate-600 aspect-square object-contain bg-white w-1/2 snap-normal snap-start"} key={image.id} src={image.url} onMouseOver={(e) => onMouseOverListener(image)}/>)}
-            </div>
-            <div className={"col-span-3 bg-orange h-fit max-h-min"}><img className={"border-2 border-slate-600 aspect-square object-contain bg-white min-w-full"} src={currentImage.url} alt="" /></div>
-        </div>
-    )
-}

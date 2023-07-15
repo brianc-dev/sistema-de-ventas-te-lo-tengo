@@ -21,7 +21,7 @@ class Cliente extends Model
             $cliente->carrito()->create();
             // create cartera for cliente
             $cliente->cartera()->create();
-        }); 
+        });
     }
 
     public function user() {
