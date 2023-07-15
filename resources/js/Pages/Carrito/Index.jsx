@@ -3,7 +3,7 @@ import {Link, useForm} from "@inertiajs/react"
 import {useMemo} from "react";
 
 function CarritoItem({producto}) {
-    const {data, setData, errors, patch, processing} = useForm({
+    const {data, setData, errors, patch, delete: destroy, processing} = useForm({
         productoId: producto.id,
         cantidad: producto.pivot.cantidad
     })
@@ -22,31 +22,22 @@ function CarritoItem({producto}) {
 
     const onSelectListener = (e) => {
         // axios.patch()
-        console.log(e.target.value)
         // setData('cantidad', e.target.value)
+        // we don't setData 'cause it doesn't update data immediately
         data.cantidad = e.target.value
         patch("/carrito", {
             preserveScroll: true,
-            onSuccess:onSuccessListener,
-            onError: onErrorListener,
             only: ['productos', 'flash'],
             data: data
         })
     }
 
-    const onSuccessListener = (res) => {
-
-        console.log("Success")
-        console.log(res)
+    const onRemoveListener = (e) => {
+        destroy('/carrito', {
+            preserveScroll: true,
+            only: ['productos', 'flash']
+        })
     }
-
-    const onErrorListener = (res) => {
-
-        console.log("Error")
-        console.log(res)
-    }
-
-
 
     return (
         <li className={"carrito-item flex"}>
@@ -77,7 +68,7 @@ function CarritoItem({producto}) {
                             {/*       onChange={e => setData('quantity', e.target.value)} required min={1}*/}
                             {/*       max={producto.cantidad}/>*/}
                         </div>
-                        <button className={"secondary-button"}>Eliminar</button>
+                        <button className={"secondary-button"} onClick={onRemoveListener}>Eliminar</button>
                     </div>
                 </div>
             </div>

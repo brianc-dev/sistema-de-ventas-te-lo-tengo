@@ -42,27 +42,28 @@ class CarritoController extends Controller
             'priority' => 'success']);
 
         return to_route("carrito.index");
-
-//        return $carrito->productos->only(['producto_id', 'cantidad']);
     }
 
-    public function remove(Request $request): Response {
+    public function remove(Request $request) {
         $this->authorize('remove', Carrito::class);
 
-        $request->validate([
+        $validatedId = $request->validate([
             'productoId' => 'required|ulid|exists:productos,id'
-        ]);
+        ])['productoId'];
 
         $carrito = $request->user()->cliente->carrito;
-        $carrito->productos->detach($request->productoId);
+        $carrito->productos()->detach($validatedId);
 
-        return $carrito->productos->only(['producto_id', 'cantidad']);
+        $request->session()->flash('message', [
+            'message' => 'Producto removido',
+            'priority' => 'success'
+        ]);
+
+        return to_route('carrito.index');
     }
 
     public function update(Request $request) {
         $this->authorize('update', Carrito::class);
-
-//        dd($request->input('cantidad'));
 
         $validatedId = $request->validate([
             'productoId' => 'required|ulid|exists:productos,id'
