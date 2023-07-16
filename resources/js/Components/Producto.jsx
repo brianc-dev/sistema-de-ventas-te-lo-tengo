@@ -9,7 +9,7 @@ export default function Producto({producto}) {
             <Link href={"/productos/"+producto.id}>
                 <Card>
                     <Stack className={"px-4 py-4"}>
-                        <img className={"flex-none border-2 border-slate-600 aspect-square object-contain bg-white w-full"} src={producto?.imagenes[0]?.url ?? host + "/storage/images/resources/no-photo.png"} alt={producto.nombre}/>
+                        <img className={"flex-none border-2 border-slate-600 aspect-square object-contain bg-white w-full"} src={producto?.imagenes[0]?.url ?? "/storage/images/resources/no-photo.png"} alt={producto.nombre}/>
                         <h4 className={"text-lg font-bold"}>{producto.nombre}</h4>
                         <p className={"text-2xl"}><span className={"align-text-top text-sm"}>$</span> {producto.precio}</p>
                     </Stack>

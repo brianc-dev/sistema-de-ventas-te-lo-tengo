@@ -27,4 +27,8 @@
     .secondary-button {
         @apply border-solid border-2 border-amber-400 p-2 text-sm rounded-lg h-full min-h-min max-h-min
     }
+
+    .main-header {
+        @apply font-bold text-3xl
+    }
 }

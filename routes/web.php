@@ -1,6 +1,10 @@
 <?php
 
-use App\Http\Controllers\{ProfileController, ProductoController, CarritoController, PerfilController};
+use App\Http\Controllers\{CategoriaController,
+    ProfileController,
+    ProductoController,
+    CarritoController,
+    PerfilController};
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,6 +34,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('/productos', ProductoController::class)->only(['index', 'show']);
+Route::resource('/categorias', CategoriaController::class)->only(['index', 'show']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -56,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
 // Admin routes
 Route::prefix('admin')->group(function() {
     Route::resource('/productos', ProductoController::class)->except(['index', 'show']);
+    Route::resource('/categorias', CategoriaController::class)->except(['index', 'show']);
 })->middleware('auth');
 
 require __DIR__.'/auth.php';
