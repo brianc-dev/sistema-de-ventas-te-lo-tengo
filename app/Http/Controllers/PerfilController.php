@@ -50,7 +50,7 @@ class PerfilController extends Controller
                 $validatedData = $request->validate([
                     'nombre' => 'required|string|alpha',
                     'apellido' => 'required|string|alpha',
-                    'telefono' => 'sometimes|nullable|string|size:12|regex:/^02[0-9]{2}-[0-9]{7}$/',
+                    'telefono' => 'sometimes|nullable|string|size:12|regex:/^0[0-9]{3}-[0-9]{7}$/',
                 ]);
 
                 $request->user()->cliente->fill($validatedData);
