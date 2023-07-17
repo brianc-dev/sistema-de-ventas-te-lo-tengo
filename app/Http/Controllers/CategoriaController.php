@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 use Inertia\Inertia;
 
 class CategoriaController extends Controller
@@ -29,7 +31,10 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-        return Inertia::render("Categoria/Create");
+        $categories = Categoria::all();
+        return Inertia::render("Categoria/Create", [
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -37,7 +42,32 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'nombre' => ['required', 'string', 'min:3', 'max:30', 'not_regex:/[^\w ]/'],
+            'imagen' => ['sometimes', File::image()
+                ->max(2 * 1024)
+                ->dimensions(
+                    Rule::dimensions()
+                        ->maxWidth(2000)
+                        ->maxHeight(2000)
+                )]
+        ]);
+
+        $categoria = new Categoria;
+        $categoria->nombre = $validatedData['nombre'];
+
+        if (isset($validatedData['imagen'])) {
+            $path = $validatedData['nombre']->store('categorias', 'images');
+            $url = asset('/storage/images/'.$path);
+            $categoria->imagen = $url;
+        }
+
+        $categoria->save();
+
+        return to_route('categorias.create')->with('message', [
+            'message' => 'Categoria creada',
+            'priority' => 'success'
+        ]);
     }
 
     /**
@@ -56,7 +86,7 @@ class CategoriaController extends Controller
      */
     public function edit(Categoria $categoria)
     {
-        //
+
     }
 
     /**
@@ -64,7 +94,39 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, Categoria $categoria)
     {
-        //
+        $validatedData = $request->validate([
+            'nombre' => ['required', 'string', 'alpha_num', 'min:3', 'max:30'],
+            'imagen' => ['sometimes', File::image()
+                ->max(2 * 1024)
+                ->dimensions(
+                    Rule::dimensions()
+                        ->maxWidth(2000)
+                        ->maxHeight(2000)
+                )]
+        ]);
+
+        $categoria->nombre = $validatedData['nombre'];
+
+        if ($categoria->isDirty()) {
+            $categoria->save();
+        }
+
+        if (isset($validatedData['imagen'])) {
+            $path = $validatedData['imagen']->store('categorias', 'images');
+            $url = asset('storage/images/'.$path);
+            $categoria->url = $url;
+
+            if ($categoria->isDirty()) {
+                $categoria->save();
+            }
+        }
+
+        $request->session()->flash('message', [
+            'message' => 'Categoria actualizada',
+            'priority' => 'success'
+        ]);
+
+        return to_route();
     }
 
     /**
