@@ -5,7 +5,8 @@ import SingleImagePreview from "@/Components/SingleImagePreview";
 
 export default function Edit({categoria}) {
 
-    const {data, setData, errors, patch, processing, progress, setDefaults, reset} = useForm({
+    const {data, setData, errors, post, processing, progress, setDefaults, reset} = useForm({
+        _method: 'patch',
         nombre: categoria.nombre,
         imagen: null
     })
@@ -15,12 +16,11 @@ export default function Edit({categoria}) {
     }
 
     const handleFiles = (e) => {
-        const file = e.target.files[0]
-        setData('imagen', file)
+        setData("imagen", e.target.files[0])
     }
 
     const onSubmit = () => {
-        patch(route('categorias.update'))
+        post(route('categorias.update', categoria))
     }
 
     const onImageClick = () => {
@@ -64,8 +64,7 @@ export default function Edit({categoria}) {
                                         </progress>
                                     )}
                                 </div>
-                                <button className={"primary-button"} disabled={processing} onClick={onSubmit}>Crear
-                                </button>
+                                <button className={"primary-button"} disabled={processing} onClick={onSubmit}>Crear</button>
                             </div>
                             <div className={"col-start-4"}>
                                 Instrucciones
@@ -76,8 +75,4 @@ export default function Edit({categoria}) {
             </main>
         </MainLayout>
     )
-}
-
-export function ImagePreview() {
-
 }

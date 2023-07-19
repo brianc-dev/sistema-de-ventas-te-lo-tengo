@@ -111,20 +111,26 @@ class CategoriaController extends Controller
 
         if (isset($validatedData['imagen'])) {
             $path = $validatedData['imagen']->store('categorias', 'images');
-            $url = asset('storage/images/'.$path);
-            $categoria->url = $url;
+            $url = asset('/storage/images/'.$path);
+            $categoria->imagen = $url;
         }
 
         if ($categoria->isDirty()) {
             $categoria->save();
+            $request->session()->flash('message', [
+                'message' => 'Categoria actualizada',
+                'priority' => 'success'
+            ]);
+        } else {
+            $request->session()->flash('message', [
+                'message' => 'No se realizaron cambios',
+                'priority' => 'info'
+            ]);
         }
 
-        $request->session()->flash('message', [
-            'message' => 'Categoria actualizada',
-            'priority' => 'success'
-        ]);
 
-        return to_route('categorias.edit');
+
+        return to_route('categorias.edit', $categoria);
     }
 
     /**
