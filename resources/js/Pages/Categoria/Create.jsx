@@ -42,7 +42,7 @@ export default function Create({categories}) {
                         <div className={"grid grid-cols-4"}>
                             <div className="col-span-2 flex flex-col gap-2 pt-2">
                                 <label htmlFor="name">Nombre de categoria</label>
-                                <input className={"input-field"} id={"nombre"} type="text" required
+                                <input className={"input-field"} id={"nombre"} type="text" required value={data.nombre}
                                        onChange={handleChange} minLength={"3"} maxLength={30} />
                                 <InputError message={errors.nombre}/>
                                 <input className={"flex-none"} type="file" accept={"image/png,image/jpeg"} onChange={handleFiles}/>

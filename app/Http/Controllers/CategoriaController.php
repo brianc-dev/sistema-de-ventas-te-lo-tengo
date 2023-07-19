@@ -86,7 +86,9 @@ class CategoriaController extends Controller
      */
     public function edit(Categoria $categoria)
     {
-
+        return Inertia::render('Categoria/Edit',[
+            'categoria' => $categoria
+        ]);
     }
 
     /**
@@ -95,8 +97,8 @@ class CategoriaController extends Controller
     public function update(Request $request, Categoria $categoria)
     {
         $validatedData = $request->validate([
-            'nombre' => ['required', 'string', 'alpha_num', 'min:3', 'max:30'],
-            'imagen' => ['sometimes', File::image()
+            'nombre' => ['required', 'string', 'min:3', 'max:30', 'not_regex:/[^\w ]/'],
+            'imagen' => ['nullable', File::image()
                 ->max(2 * 1024)
                 ->dimensions(
                     Rule::dimensions()
@@ -107,18 +109,14 @@ class CategoriaController extends Controller
 
         $categoria->nombre = $validatedData['nombre'];
 
-        if ($categoria->isDirty()) {
-            $categoria->save();
-        }
-
         if (isset($validatedData['imagen'])) {
             $path = $validatedData['imagen']->store('categorias', 'images');
             $url = asset('storage/images/'.$path);
             $categoria->url = $url;
+        }
 
-            if ($categoria->isDirty()) {
-                $categoria->save();
-            }
+        if ($categoria->isDirty()) {
+            $categoria->save();
         }
 
         $request->session()->flash('message', [
@@ -126,7 +124,7 @@ class CategoriaController extends Controller
             'priority' => 'success'
         ]);
 
-        return to_route();
+        return to_route('categorias.edit');
     }
 
     /**
