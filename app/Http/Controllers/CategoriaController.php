@@ -44,7 +44,7 @@ class CategoriaController extends Controller
     {
         $validatedData = $request->validate([
             'nombre' => ['required', 'string', 'min:3', 'max:30', 'not_regex:/[^\w ]/'],
-            'imagen' => ['sometimes', File::image()
+            'imagen' => ['nullable', File::image()
                 ->max(2 * 1024)
                 ->dimensions(
                     Rule::dimensions()
@@ -57,7 +57,7 @@ class CategoriaController extends Controller
         $categoria->nombre = $validatedData['nombre'];
 
         if (isset($validatedData['imagen'])) {
-            $path = $validatedData['nombre']->store('categorias', 'images');
+            $path = $validatedData['imagen']->store('categorias', 'images');
             $url = asset('/storage/images/'.$path);
             $categoria->imagen = $url;
         }

@@ -6,11 +6,17 @@ import {useEffect} from "react";
 export default function Create({categories}) {
 
     const {data, setData, errors, post, processing, setDefaults, reset} = useForm({
-        nombre: ""
+        nombre: "",
+        imagen: null
     })
 
     const handleChange = (e) => {
         setData(e.target.id, e.target.value)
+    }
+
+    const handleFiles = (e) => {
+        const file = e.target.files[0]
+        setData('imagen', file)
     }
 
     const onSubmit = () => {
@@ -25,7 +31,7 @@ export default function Create({categories}) {
                         <h2 className={"font-semibold text-lg"}>Categorias existentes</h2>
                         <div>
                             <ul>
-                                {categories.map(category => <li>{category.nombre}</li>)}
+                                {categories.map(category => <li key={category.id}>{category.nombre}</li>)}
                             </ul>
                         </div>
                     </div>
@@ -39,6 +45,7 @@ export default function Create({categories}) {
                                 <input className={"input-field"} id={"nombre"} type="text" required
                                        onChange={handleChange} minLength={"3"} maxLength={30} />
                                 <InputError message={errors.nombre}/>
+                                <input className={"flex-none"} type="file" accept={"image/png,image/jpeg"} onChange={handleFiles}/>
                                 <button className={"primary-button"} disabled={processing} onClick={onSubmit}>Crear
                                 </button>
                             </div>
