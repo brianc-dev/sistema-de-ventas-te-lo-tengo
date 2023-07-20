@@ -104,7 +104,8 @@ class CategoriaController extends Controller
                     Rule::dimensions()
                         ->maxWidth(2000)
                         ->maxHeight(2000)
-                )]
+                )],
+            'setToDefaultImage' => ['required_without:imagen', 'boolean']
         ]);
 
         $categoria->nombre = $validatedData['nombre'];
@@ -113,6 +114,10 @@ class CategoriaController extends Controller
             $path = $validatedData['imagen']->store('categorias', 'images');
             $url = asset('/storage/images/'.$path);
             $categoria->imagen = $url;
+        }
+
+        if ($validatedData['setToDefaultImage'] && !isset($validatedData['imagen'])) {
+            $categoria->imagen = '/storage/images/resources/open-box.png';
         }
 
         if ($categoria->isDirty()) {

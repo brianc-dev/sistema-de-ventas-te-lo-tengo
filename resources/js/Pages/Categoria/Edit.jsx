@@ -2,29 +2,48 @@ import MainLayout from "@/Layouts/MainLayout";
 import {useForm, usePage} from "@inertiajs/react";
 import InputError from "@/Components/InputError";
 import SingleImagePreview from "@/Components/SingleImagePreview";
+import {useState} from "react";
 
 export default function Edit({categoria}) {
-
+    // todo: clean up logic for changing picture
     const {data, setData, errors, post, processing, progress, setDefaults, reset} = useForm({
-        _method: 'patch',
+        _method: 'patch', // So it can receive PATCH request with file on back-end
         nombre: categoria.nombre,
-        imagen: null
+        imagen: null,
+        setToDefaultImage: false
     })
+
+    const [imagenActual, setImagenActual] = useState(categoria.imagen)
 
     const handleChange = (e) => {
         setData(e.target.id, e.target.value)
     }
 
     const handleFiles = (e) => {
+        console.log("handle files")
+        console.log(data.setToDefaultImage)
+        setData('setToDefaultImage', false)
         setData("imagen", e.target.files[0])
     }
 
     const onSubmit = () => {
-        post(route('categorias.update', categoria))
+        post(route('categorias.update', categoria), {
+            onSuccess: () => { reset('imagen')},
+            preserveState: false
+        })
     }
 
     const onImageClick = () => {
         setData("imagen", null)
+    }
+
+    const setToDefaultImage = () => {
+        const res = confirm('Estas seguro que deseas eliminar la imagen actual? Se usara la imagen por defecto')
+        if (res) {
+            setData('imagen', null)
+            setData('setToDefaultImage', true)
+            setImagenActual('/storage/images/resources/open-box.png')
+        }
     }
 
     return (
@@ -51,12 +70,16 @@ export default function Edit({categoria}) {
                                 <InputError message={errors.nombre}/>
                                 <div>
                                     <p>Imagen actual</p>
-                                    <img src={categoria.imagen} alt=""/>
+                                    <div className={"flex gap-2"}>
+
+                                        <div><img src={imagenActual} alt=""/></div>
+                                        {imagenActual !== "/storage/images/resources/open-box.png" && <button className={"self-start"} onClick={setToDefaultImage}>x</button>}
+                                    </div>
                                 </div>
                                 <div>
                                     <p>Nueva imagen (Haz click para eliminar)</p>
                                     <SingleImagePreview image={data.imagen} onClickListener={onImageClick}/>
-                                    <input className={"flex-none"} type="file" accept={"image/png,image/jpeg"} onChange={handleFiles}/>
+                                    <input className={"flex-none"} type="file" accept={"image/png,image/jpeg"} onChange={handleFiles} />
                                     <InputError message={errors.imagen}/>
                                     {progress && (
                                         <progress value={progress.percentage} max="100">
@@ -64,7 +87,7 @@ export default function Edit({categoria}) {
                                         </progress>
                                     )}
                                 </div>
-                                <button className={"primary-button"} disabled={processing} onClick={onSubmit}>Crear</button>
+                                <button className={"primary-button"} disabled={processing} onClick={onSubmit}>Guardar</button>
                             </div>
                             <div className={"col-start-4"}>
                                 Instrucciones
