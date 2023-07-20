@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use Inertia\Inertia;
@@ -111,17 +112,28 @@ class CategoriaController extends Controller
         $categoria->nombre = $validatedData['nombre'];
 
         if (isset($validatedData['imagen'])) {
+            if ($categoria->imagen !== "/storage/images/resources/open-box.png") {
+                $lastImage = $categoria->imagen;
+            }
             $path = $validatedData['imagen']->store('categorias', 'images');
             $url = asset('/storage/images/'.$path);
             $categoria->imagen = $url;
         }
 
         if ($validatedData['setToDefaultImage'] && !isset($validatedData['imagen'])) {
+            if ($categoria->imagen !== "/storage/images/resources/open-box.png") {
+                $lastImage = $categoria->imagen;
+            }
             $categoria->imagen = '/storage/images/resources/open-box.png';
         }
 
         if ($categoria->isDirty()) {
             $categoria->save();
+            if (isset($lastImage)) {
+                $url = parse_url($lastImage);
+                $basename = pathinfo($url['path'])['basename'];
+                Storage::disk('images')->delete('categorias/'.$basename);
+            }
             $request->session()->flash('message', [
                 'message' => 'Categoria actualizada',
                 'priority' => 'success'
